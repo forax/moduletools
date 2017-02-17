@@ -1,0 +1,11 @@
+{                                                                             
+  resolver: {                                                                 
+    dependencies: [                                                           
+    ]                                                                         
+  },                                                                          
+  packager: {                                                                 
+    moduleMetadata: [                                                         
+    ]                                                                         
+  },                                                                          
+  run: ["compiler", "packager"]                                           
+}                                                                             
