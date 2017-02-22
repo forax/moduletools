@@ -114,8 +114,8 @@ public class ModuleHelper {
   private static ModuleDescriptor createModuleDescriptor(ModuleNode moduleNode, Path moduleInfoPath) {
     boolean isOpen = (moduleNode.access & ACC_OPEN) != 0;
     ModuleDescriptor.Builder builder = isOpen?
-        ModuleDescriptor.openModule(moduleNode.name):
-        ModuleDescriptor.module(moduleNode.name);
+        ModuleDescriptor.newOpenModule(moduleNode.name):
+        ModuleDescriptor.newModule(moduleNode.name);
     
     moduleNode.requires.forEach(require -> builder.requires(requireModifiers(require.access), require.module));
     moduleNode.exports.forEach(export -> {
@@ -139,7 +139,7 @@ public class ModuleHelper {
     Set<String> javaPackages = findJavaPackages(moduleDirectory);
     javaPackages.removeAll(moduleNode.exports.stream().map(export -> export.packaze).collect(Collectors.toList()));
     javaPackages.removeAll(moduleNode.opens.stream().map(export -> export.packaze).collect(Collectors.toList()));
-    builder.contains(javaPackages);
+    builder.packages(javaPackages);
 
     ModuleDescriptor descriptor = builder.build();
     //System.out.println(descriptor.name() + " " + descriptor.packages());

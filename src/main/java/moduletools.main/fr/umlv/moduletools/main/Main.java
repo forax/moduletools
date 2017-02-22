@@ -3,7 +3,9 @@ package fr.umlv.moduletools.main;
 import java.io.UncheckedIOException;
 import java.lang.module.ModuleDescriptor;
 import java.lang.module.ModuleDescriptor.Builder;
+import java.lang.module.ModuleDescriptor.Modifier;
 import java.util.HashSet;
+import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -33,17 +35,10 @@ public class Main {
   }
   
   private static Builder toBuilder(ModuleDescriptor descriptor) {
-    Builder builder;
     String name = descriptor.name();
-    if (descriptor.isAutomatic()) {
-      builder = ModuleDescriptor.automaticModule(name);
-    } else {
-      if (descriptor.isOpen()) {
-        builder = ModuleDescriptor.openModule(name);
-      } else {
-        builder = ModuleDescriptor.module(name);
-      }
-    }
+    Set<Modifier> modifiers = descriptor.isAutomatic()? Set.of(Modifier.AUTOMATIC):
+      descriptor.isOpen()? Set.of(Modifier.OPEN): Set.of();
+    Builder builder = ModuleDescriptor.newModule(name, modifiers);
     
     descriptor.requires().forEach(builder::requires);
     descriptor.exports().forEach(builder::exports);
@@ -52,7 +47,7 @@ public class Main {
     HashSet<String> packages = new HashSet<>(descriptor.packages());
     descriptor.exports().forEach(export -> packages.remove(export.source()));
     descriptor.opens().forEach(open -> packages.remove(open.source()));
-    packages.forEach(builder::contains);
+    builder.packages(packages);
     
     descriptor.uses().forEach(builder::uses);
     descriptor.provides().forEach(builder::provides);

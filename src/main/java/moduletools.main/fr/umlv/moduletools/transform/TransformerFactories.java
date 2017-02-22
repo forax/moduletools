@@ -15,7 +15,7 @@ enum TransformerFactories {
   ADD_READS(args -> splitByComma(args).map(module -> (Transformer)builder -> builder.requires(module)).reduce(Transformer::compose).get()),
   ADD_EXPORTS(args -> exportsTransformer(splitByEqualThenComma(args, true))),
   ADD_OPENS(args -> opensTransformer(splitByEqualThenComma(args, true))),
-  ADD_PACKAGES(args -> builder -> builder.contains(splitByComma(args).collect(toSet()))),
+  ADD_PACKAGES(args -> builder -> builder.packages(splitByComma(args).collect(toSet()))),
   ADD_USES(args -> builder -> builder.uses(args)),
   ADD_PROVIDES(args -> providesTransformer(splitByEqualThenComma(args, false)))
   ;
