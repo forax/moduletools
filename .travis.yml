@@ -1,23 +1,12 @@
-language: java
 sudo: false
 dist: trusty
-
-addons:
-  apt:
-    packages:
-      - oracle-java9-installer
-
-jdk: oraclejdk9
+language: java
 
 install:
-# Download pro and build it...
-- wget --no-check-certificate https://github.com/forax/pro/archive/master.zip
-- unzip master.zip
-- cd pro-master
-- chmod u+x build.sh
-- ./build.sh
-- cd ..
+- wget --no-check-certificate https://github.com/forax/pro/releases/download/v0.9.165/pro-9-b165-linux.tar.gz
+- tar -xzf pro-9-b165-linux.tar.gz
 
 script:
-- ./pro-master/target/pro/bin/pro
+- ./pro/bin/pro
+
 
